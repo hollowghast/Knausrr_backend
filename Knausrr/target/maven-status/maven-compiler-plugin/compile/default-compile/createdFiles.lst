@@ -1,0 +1,17 @@
+com\knausrr\Knausrr\admin\service\CsvConverterService.class
+com\knausrr\Knausrr\entities\Price.class
+com\knausrr\Knausrr\entities\Address.class
+com\knausrr\Knausrr\entities\OpeningHours.class
+com\knausrr\Knausrr\KnausrrApplication.class
+com\knausrr\Knausrr\entities\Brand.class
+com\knausrr\Knausrr\JpaConfiguration.class
+com\knausrr\Knausrr\entities\Weekday.class
+com\knausrr\Knausrr\admin\service\impl\DefaultCsvConverterService.class
+com\knausrr\Knausrr\entities\Company.class
+com\knausrr\Knausrr\entities\Store.class
+com\knausrr\Knausrr\admin\AdminService.class
+com\knausrr\Knausrr\repositories\AdminRepository.class
+com\knausrr\Knausrr\entities\Base_Product.class
+com\knausrr\Knausrr\entities\Local_Product.class
+com\knausrr\Knausrr\entities\Price_Type.class
+com\knausrr\Knausrr\admin\AdminController.class
