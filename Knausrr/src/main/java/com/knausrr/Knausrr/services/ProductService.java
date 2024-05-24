@@ -11,6 +11,6 @@ public class ProductService {
     private LocalProductRepo localProductRepo;
 
     public Local_Product getLocalProductById(Long id){
-        return localProductRepo.getLocalProductById(id);
+        return localProductRepo.findLocalProductById(id);
     }
 }
