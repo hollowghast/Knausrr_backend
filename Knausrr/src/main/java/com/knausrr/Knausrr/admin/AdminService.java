@@ -26,9 +26,9 @@ public class AdminService {
         Address a = new Address("8010", "Graz", "Herrengasse");
         Company c = new Company("Spar");
         Store s = new Store(c, a);
-        OpeningHours o = new OpeningHours(s, LocalTime.of(8, 0), LocalTime.of(18, 30));
+        OpeningHours o = new OpeningHours(1l, s, 8., 18.5);
         Brand b = new Brand("CocaCola Company Ltd");
-        Base_Product bp = new Base_Product("Coke", b);
+        Base_Product bp = new Base_Product("918262128", "Coke", "some coke", b);
         Local_Product lp = new Local_Product(bp, s);
         Price p = new Price(lp, 0.99f, OffsetDateTime.now(), Price_Type.BASE);
 

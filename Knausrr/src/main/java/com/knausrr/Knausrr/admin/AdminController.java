@@ -30,19 +30,8 @@ public class AdminController {
     }
 
     @PostMapping(value = "/init", consumes = "multipart/form-data")
-    public String addShop(@RequestParam("file") MultipartFile f) {
-        //  try {
+    public Store addStore(@RequestParam("file") MultipartFile f) {
         Store s = converter.readStoreFromCsvFile(f);
-        if (s == null) {
-            return "Error";
-        } else {
-            return "shop?id=626756152"; //show shop
-        }
-        /* }catch (IOException ioe){
-            ioe.printStackTrace(); //log
-        }catch(Exception e){
-            e.printStackTrace(); //log
-        }
-        return "somethingWentWrong";*/
+        return s;
     }
 }

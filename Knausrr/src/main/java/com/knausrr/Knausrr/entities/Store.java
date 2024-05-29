@@ -3,6 +3,8 @@ package com.knausrr.Knausrr.entities;
 import lombok.*;
 
 import jakarta.persistence.*;
+
+import java.util.Currency;
 import java.util.List;
 
 @Entity
@@ -34,8 +36,12 @@ public class Store {
     private List<Local_Product> localProducts;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "store") //done
-    private List<OpeningHours> opening_hours;
+    private List<OpeningHours> openingHours;
 
+    /**
+     * accepted currencies (CH -> CHF/EUR)
+     */
+    private List<Currency> currencies;
 
     public Store(Company company, Address address) {
         this.company = company;

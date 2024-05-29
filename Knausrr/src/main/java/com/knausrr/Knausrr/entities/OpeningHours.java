@@ -21,17 +21,22 @@ public class OpeningHours {
             generator = "seq_Opening_Hours"
     )
     @Column(name = "opening_hours_id")
-    private Long id;
-    @Enumerated(EnumType.ORDINAL)
-    private Weekday weekday;
+    private final Long id;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", nullable = false) //done
     private Store store;
+
+    /**
+     * Format 0800 - 1200
+     * always assuming the local time zone
+     */
     @Column(nullable = false)
-    private LocalTime start_time;
+    private final Double startTime;
     @Column(nullable = false)
-    private LocalTime end_time;
-    private LocalDate date;
+    private final Double endTime;
+
+    private Date specialOpeningHours;
 
     /**
      * Sets general opening hours which are valid for EVERY day
@@ -39,24 +44,11 @@ public class OpeningHours {
      * @param start_time
      * @param end_time
      */
-    public OpeningHours(Store store, LocalTime start_time, LocalTime end_time) {
+    public OpeningHours(Long id, Store store, Double start_time, Double end_time) {
+        this.id=id;
         this.store = store;
-        this.start_time = start_time;
-        this.end_time = end_time;
-    }
-
-    /**
-     * Sets opening hours for specific weekdays
-     * @param weekday
-     * @param store
-     * @param start_time
-     * @param end_time
-     */
-    public OpeningHours(Weekday weekday, Store store, LocalTime start_time, LocalTime end_time) {
-        this.weekday = weekday;
-        this.store = store;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.startTime = start_time;
+        this.endTime = end_time;
     }
 
     /**
@@ -66,10 +58,11 @@ public class OpeningHours {
      * @param end_time
      * @param date
      */
-    public OpeningHours(Store store, LocalTime start_time, LocalTime end_time, LocalDate date) {
+    public OpeningHours(Long id, Store store, Double start_time, Double end_time, Date date) {
+        this.id=id;
         this.store = store;
-        this.start_time = start_time;
-        this.end_time = end_time;
-        this.date = date;
+        this.startTime = start_time;
+        this.endTime = end_time;
+        this.specialOpeningHours = date;
     }
 }
