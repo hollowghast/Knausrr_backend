@@ -1,7 +1,10 @@
 package com.knausrr.Knausrr.entities;
 
 
-import lombok.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
-@Data
+
 public class Local_Product{
     /* START - members */
     @Id
@@ -51,21 +54,26 @@ public class Local_Product{
     /* START - references */
     @ManyToOne
     @JoinColumn(name = "base_product_id", nullable = false)
+    @JsonIgnore
     private Base_Product base_product;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", nullable = false) //done
+    @JsonIgnore
     private Store store;
 
     @OneToMany(mappedBy = "local_product")
+    @JsonIgnore
     private List<Price> prices;
     /* END - references */
 
     /* START - constructors */
-    @PersistenceCreator
     public Local_Product(Base_Product base_product, Store store) {
         this.base_product = base_product;
         this.store = store;
+    }
+
+    public Local_Product() {
     }
     /* END - constructors */
 

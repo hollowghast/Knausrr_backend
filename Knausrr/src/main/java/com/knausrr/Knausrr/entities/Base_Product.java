@@ -1,7 +1,9 @@
 package com.knausrr.Knausrr.entities;
 
-import lombok.*;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.Currency;
 
 @Entity
-@Data
+
 @NamedQueries(
         @NamedQuery(name = "Base_Product.findBaseProductsById",
                 query="SELECT b FROM Base_Product b WHERE b.id=:id"
@@ -29,23 +31,29 @@ public class Base_Product {
     )
     private Long id;
     @Column(nullable = false)
-    private final String barcode; //pk?
+    private String barcode; //pk?
     @Column(name = "base_product_name", nullable = false)
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private Timestamp _last_update;
 
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
-    private final Brand brand;
+    @JsonIgnore
+    private Brand brand;
 
+    /* START - constructors */
     public Base_Product(String barcode, String name, String description, Brand brand) {
         this.barcode = barcode;
         this.name = name;
         this.description = description;
         this.brand = brand;
     }
+
+    public Base_Product() {
+    }
+    /* END - constructors */
 
     /* START - getter */
     public Long getId() {

@@ -1,12 +1,14 @@
 package com.knausrr.Knausrr.entities;
 
-import lombok.*;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+
 public class Brand {
     @Id
     @SequenceGenerator(
@@ -23,11 +25,17 @@ public class Brand {
     @Column(name = "brand_name", nullable = false)
     private String name;
     @OneToMany(mappedBy = "brand")
+    @JsonIgnore
     private List<Base_Product> base_products;
 
+    /* START - constructors */
     public Brand(String name) {
         this.name = name;
     }
+
+    public Brand() {
+    }
+    /* END - constructors */
 
     public Long getId() {
         return id;

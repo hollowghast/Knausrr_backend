@@ -1,14 +1,16 @@
 package com.knausrr.Knausrr.entities;
 
-import lombok.*;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 @Entity
-@Data
+
 public class OpeningHours {
     @Id
     @SequenceGenerator(
@@ -21,22 +23,26 @@ public class OpeningHours {
             generator = "seq_Opening_Hours"
     )
     @Column(name = "opening_hours_id")
-    private final Long id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "store_id", nullable = false) //done
-    private Store store;
+    private Long id;
 
     /**
      * Format 0800 - 1200
      * always assuming the local time zone
      */
     @Column(nullable = false)
-    private final Double startTime;
+    private Double startTime;
     @Column(nullable = false)
-    private final Double endTime;
+    private Double endTime;
 
     private Date specialOpeningHours;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "store_id", nullable = false)
+    @JsonIgnore
+    private Store store;
+
+
 
     /**
      * Sets general opening hours which are valid for EVERY day
@@ -64,5 +70,8 @@ public class OpeningHours {
         this.startTime = start_time;
         this.endTime = end_time;
         this.specialOpeningHours = date;
+    }
+
+    public OpeningHours() {
     }
 }

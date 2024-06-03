@@ -1,11 +1,14 @@
 package com.knausrr.Knausrr.entities;
 
-import lombok.*;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 
 @Entity
-@Data
+
 public class Address {
     @Id
     @SequenceGenerator(
@@ -29,7 +32,8 @@ public class Address {
     private String street;
     private String details;
 
-    @OneToOne(mappedBy = "address") //done
+    @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Store store;
 
     public Address(String zipcode, String city, String street) {
@@ -37,4 +41,47 @@ public class Address {
         this.city = city;
         this.street = street;
     }
+
+    /* START - constructors */
+    public Address() {
+    }
+    /* END - constructors */
+
+
+    /* START - getter */
+    public Long getId() {
+        return id;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+    /* END - getter */
+
+    /* START - setter */
+    /* END - setter */
 }

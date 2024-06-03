@@ -1,14 +1,17 @@
 package com.knausrr.Knausrr.entities;
 
-import lombok.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.PersistenceCreator;
 
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
 @Entity
-@Data
+
 public class Store {
     @Id
     @SequenceGenerator(
@@ -25,17 +28,21 @@ public class Store {
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
+    @JsonIgnore
     private Company company;
 
-    @OneToOne(cascade = CascadeType.ALL) //done
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
+    @JsonIgnore
     private Address address;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store") //done
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+    @JsonIgnore
     private List<Local_Product> localProducts;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store") //done
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+    @JsonIgnore
     private List<OpeningHours> openingHours;
 
     /**
@@ -43,8 +50,45 @@ public class Store {
      */
     private List<Currency> currencies;
 
+    /* START - constructors */
     public Store(Company company, Address address) {
         this.company = company;
         this.address = address;
+        currencies = new ArrayList<Currency>();
     }
+
+    public Store() {
+        currencies = new ArrayList<Currency>();
+    }
+    /* END - constructors */
+
+    /* START - getter */
+
+    public Long getId() {
+        return id;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<Local_Product> getLocalProducts() {
+        return localProducts;
+    }
+
+    public List<OpeningHours> getOpeningHours() {
+        return openingHours;
+    }
+
+    public List<Currency> getCurrencies() {
+        return currencies;
+    }
+    /* END - getter */
+
+    /* START - setter */
+    /* END - setter */
 }
