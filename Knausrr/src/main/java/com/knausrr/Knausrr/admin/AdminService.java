@@ -25,7 +25,7 @@ public class AdminService {
 
         Address a = new Address("8010", "Graz", "Herrengasse");
         Company c = new Company("Spar");
-        Store s = new Store(c, a);
+        Store s = new Store("testshop", c, a);
         //OpeningHours o = new OpeningHours(1l, s, 8., 18.5);
         Brand b = new Brand("CocaCola Company Ltd");
         Base_Product bp = new Base_Product("918262128", "Coke", "some coke", b);

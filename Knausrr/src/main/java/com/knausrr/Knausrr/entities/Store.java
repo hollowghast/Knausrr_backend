@@ -26,6 +26,8 @@ public class Store {
     @Column(name = "store_id")
     private Long id;
 
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     @JsonIgnore
@@ -57,12 +59,22 @@ public class Store {
         currencies = new ArrayList<Currency>();
     }
 
+    public Store(String name, Company company, Address address) {
+        this.name = name;
+        this.company = company;
+        this.address = address;
+    }
+
     public Store() {
         currencies = new ArrayList<Currency>();
     }
     /* END - constructors */
 
     /* START - getter */
+
+    public String getName() {
+        return name;
+    }
 
     public Long getId() {
         return id;

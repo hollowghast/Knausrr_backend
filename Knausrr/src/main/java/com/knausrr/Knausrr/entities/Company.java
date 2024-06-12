@@ -37,4 +37,27 @@ public class Company {
     public Company() {
     }
     /* END - constructors */
+
+
+    /* START - getter */
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<Store> getStores() {
+        return stores;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+    /* END - getter */
+
+    /* START - setter */
+    /* END - setter */
 }
