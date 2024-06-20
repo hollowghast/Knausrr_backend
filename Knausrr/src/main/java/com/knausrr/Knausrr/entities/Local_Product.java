@@ -73,6 +73,10 @@ public class Local_Product{
         this.store = store;
     }
 
+    public Local_Product(Long id) {
+        this.id = id;
+    }
+
     public Local_Product() {
     }
     /* END - constructors */

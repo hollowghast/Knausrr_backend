@@ -2,6 +2,7 @@ package com.knausrr.Knausrr.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.PersistenceCreator;
@@ -11,7 +12,6 @@ import java.util.Currency;
 import java.util.List;
 
 @Entity
-
 public class Store {
     @Id
     @SequenceGenerator(

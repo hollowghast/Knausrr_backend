@@ -59,10 +59,10 @@ public class DefaultCsvConverterService implements CsvConverterService {
             if (f.getResource().isReadable()) {
                 //switch file types
                 String fname = f.getResource().getFilename();
-                String ending = fname.substring(fname.lastIndexOf((int) '.') + 1 /* dont need the dot */);
+                String ending = fname.substring(fname.lastIndexOf('.') + 1 /* dont need the dot */);
                 System.out.println("Preparing to analyze " + fname);
 
-                if (ending.toLowerCase().equals("csv")) {
+                if (ending.equalsIgnoreCase("csv")) {
                     //throw new UnsupportedOperationException("not done yet");
                     convert(f);
                 }
