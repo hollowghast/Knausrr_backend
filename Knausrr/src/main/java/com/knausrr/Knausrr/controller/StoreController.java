@@ -24,8 +24,8 @@ public class StoreController {
     public StoreDTO findStoreByName(@RequestParam("name") String name){
         return storeService.findStoreByName(name, ExposureLevel.STANDARD);
     }
-    @GetMapping(value = "/company/")
-    public List<StoreDTO> findStoresByCompanyName(@RequestParam("companyName") String compName){
+    @GetMapping(value = "/company", params = "name")
+    public List<StoreDTO> findStoresByCompanyName(@RequestParam("name") String compName){
         return storeService.findStoresByCompanyName(compName, ExposureLevel.STANDARD);
     }
 

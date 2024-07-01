@@ -4,8 +4,13 @@ package com.knausrr.Knausrr.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.knausrr.Knausrr.entities.dtos.AddressDTO;
+import com.knausrr.Knausrr.entities.dtos.CompanyDTO;
+import com.knausrr.Knausrr.entities.dtos.DTOBuilder;
+import com.knausrr.Knausrr.entities.dtos.ExposureLevel;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 
@@ -20,7 +25,6 @@ public class Company {
 
     @OneToMany(mappedBy = "company",
     cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Store> stores;
 
     @Column(name = "company_name", nullable = false)
@@ -38,6 +42,22 @@ public class Company {
     }
     /* END - constructors */
 
+    public final static CompanyDTO buildDto(Company company, ExposureLevel exLvl){
+        DTOBuilder<CompanyDTO> companyDtoBuilder = null;
+
+        switch (exLvl){
+            case EXTENDED:
+            case COMPLETE:
+            case FAST:
+            case MINIMAL:
+            case STANDARD :
+            default: {
+                companyDtoBuilder = DTOBuilder.of(() -> new CompanyDTO(company, exLvl));
+            }
+        }
+
+        return Objects.isNull(companyDtoBuilder) ? null : companyDtoBuilder.build();
+    }
 
     /* START - getter */
 
@@ -59,5 +79,21 @@ public class Company {
     /* END - getter */
 
     /* START - setter */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setStores(List<Store> stores) {
+        this.stores = stores;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
     /* END - setter */
 }

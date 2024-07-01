@@ -1,10 +1,8 @@
 package com.knausrr.Knausrr.entities.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.knausrr.Knausrr.entities.Address;
-import com.knausrr.Knausrr.entities.Company;
-import com.knausrr.Knausrr.entities.Local_Product;
-import com.knausrr.Knausrr.entities.Store;
+import com.knausrr.Knausrr.entities.*;
+import org.springframework.cglib.core.Local;
 
 import java.util.List;
 
@@ -15,9 +13,11 @@ public class StoreDTO {
     /* END - members */
 
     /* START - references */
-    private  Address address;
-    private  Company company;
-    private List<Local_Product> localProducts;
+    private  AddressDTO address;
+    private  CompanyDTO company;
+    private List<LocalProductDTO> localProducts;
+    private List<OpeningHoursDTO> openingHours;
+    private ContactDTO manager;
     /* END - references */
 
     /* START - constructor */
@@ -25,20 +25,9 @@ public class StoreDTO {
     public StoreDTO() {
     }
 
-    public StoreDTO(Store st){
+    public StoreDTO(Store st, ExposureLevel exLvl){
         this.id = st.getId();
         this.name = st.getName();
-        this.address = st.getAddress();
-        this.company = st.getCompany();
-        this.localProducts = st.getLocalProducts();
-    }
-
-    public StoreDTO(Long id, String name, Address address, Company company, List<Local_Product> localProducts) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.company = company;
-        this.localProducts = localProducts;
     }
     /* END - constructor */
 
@@ -52,16 +41,24 @@ public class StoreDTO {
         return name;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public Company getCompany() {
+    public CompanyDTO getCompany() {
         return company;
     }
 
-    public List<Local_Product> getLocalProducts() {
+    public List<LocalProductDTO> getLocalProducts() {
         return localProducts;
+    }
+
+    public ContactDTO getManager() {
+        return manager;
+    }
+
+    public List<OpeningHoursDTO> getOpeningHours() {
+        return openingHours;
     }
     /* END - getter */
 
@@ -75,16 +72,24 @@ public class StoreDTO {
         this.name = name;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(Address address, ExposureLevel exLvl) {
+        this.address = Address.buildDto(address, exLvl);
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompany(Company company, ExposureLevel exLvl) {
+        this.company = Company.buildDto(company, exLvl);
     }
 
-    public void setLocalProducts(List<Local_Product> localProducts) {
-        this.localProducts = localProducts;
+    public void setLocalProducts(List<Local_Product> localProducts, ExposureLevel exLvl) {
+        this.localProducts = localProducts.stream().map(lp -> Local_Product.buildDto(lp, exLvl)).toList();
+    }
+
+    public void setManager(Contact manager, ExposureLevel exLvl) {
+        this.manager = Contact.buildDto(manager, exLvl);
+    }
+
+    public void setOpeningHours(List<OpeningHours> openingHours, ExposureLevel exLvl) {
+        this.openingHours = openingHours.stream().map(oh -> OpeningHours.buildDto(oh, exLvl)).toList();
     }
     /* END - setter */
 

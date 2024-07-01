@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-
 public class Brand {
+    /* START - members */
     @Id
     @SequenceGenerator(
             name = "seq_Brand",
@@ -24,9 +24,12 @@ public class Brand {
     private Long id;
     @Column(name = "brand_name", nullable = false)
     private String name;
+    /* END - members */
+
+    /* START - references */
     @OneToMany(mappedBy = "brand")
-    @JsonIgnore
     private List<Base_Product> base_products;
+    /* END - references */
 
     /* START - constructors */
     public Brand(String name) {

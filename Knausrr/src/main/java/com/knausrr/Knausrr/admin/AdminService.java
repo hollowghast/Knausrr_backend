@@ -25,12 +25,16 @@ public class AdminService {
 
         Address a = new Address("8010", "Graz", "Herrengasse");
         Company c = new Company("Spar");
+        Contact con = new Contact();
+        con.setFirstname("Daniel");
+        con.setLastname("Deuerlein");
         Store s = new Store("testshop", c, a);
+        s.setManager(con);
         //OpeningHours o = new OpeningHours(1l, s, 8., 18.5);
         Brand b = new Brand("CocaCola Company Ltd");
         Base_Product bp = new Base_Product("918262128", "Coke", "some coke", b);
         Local_Product lp = new Local_Product(bp, s);
-        Price p = new Price(lp, 0.99f, OffsetDateTime.now(), Price_Type.BASE);
+        Price p = new Price(lp, 0.99, OffsetDateTime.now(), Price_Type.BASE);
 
         entityManager.getTransaction().begin();
         entityManager.persist(a);

@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public interface BaseProductRepo extends JpaRepository<Base_Product, Long> {
-    Base_Product findBaseProductById(@Param("id") Long id);
+    Base_Product findBaseProductById(@Param("id") UUID id);
 }

@@ -5,6 +5,10 @@ package com.knausrr.Knausrr.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.knausrr.Knausrr.entities.dtos.CompanyDTO;
+import com.knausrr.Knausrr.entities.dtos.DTOBuilder;
+import com.knausrr.Knausrr.entities.dtos.ExposureLevel;
+import com.knausrr.Knausrr.entities.dtos.LocalProductDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 
@@ -54,16 +59,13 @@ public class Local_Product{
     /* START - references */
     @ManyToOne
     @JoinColumn(name = "base_product_id", nullable = false)
-    @JsonIgnore
     private Base_Product base_product;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", nullable = false) //done
-    @JsonIgnore
     private Store store;
 
     @OneToMany(mappedBy = "local_product")
-    @JsonIgnore
     private List<Price> prices;
     /* END - references */
 
@@ -73,13 +75,26 @@ public class Local_Product{
         this.store = store;
     }
 
-    public Local_Product(Long id) {
-        this.id = id;
-    }
-
     public Local_Product() {
     }
     /* END - constructors */
+
+    public final static LocalProductDTO buildDto(Local_Product lp, ExposureLevel exLvl){
+        DTOBuilder<LocalProductDTO> lpDtoBuilder = null;
+
+        switch (exLvl){
+            case EXTENDED:
+            case COMPLETE:
+            case FAST:
+            case MINIMAL:
+            case STANDARD :
+            default: {
+                lpDtoBuilder = DTOBuilder.of(() -> new LocalProductDTO(lp, exLvl));
+            }
+        }
+
+        return Objects.isNull(lpDtoBuilder) ? null : lpDtoBuilder.build();
+    }
 
     /* START - GETTER */
     public Store getStore() {
@@ -117,6 +132,19 @@ public class Local_Product{
     public Blob getImage() {
         return image;
     }
+
+    public Timestamp get_created() {
+        return _created;
+    }
+
+    public Timestamp get_last_change() {
+        return _last_change;
+    }
+
+    public List<Price> getPrices() {
+        return prices;
+    }
+
     /* END - GETTER */
 
     /* START - SETTER */
