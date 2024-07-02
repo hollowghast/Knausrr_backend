@@ -6,6 +6,8 @@ import com.knausrr.Knausrr.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -13,7 +15,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping()
-    public Local_Product getLocalProduct(@RequestParam("id") Long id){
+    public Local_Product getLocalProduct(@RequestParam("id") UUID id){
         return productService.getLocalProductById(id);
     }
 

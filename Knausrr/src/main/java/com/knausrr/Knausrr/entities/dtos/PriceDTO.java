@@ -6,10 +6,11 @@ import com.knausrr.Knausrr.entities.Price_Type;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 public class PriceDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private Double price;
     private OffsetDateTime start_date;
     private OffsetDateTime end_date;
@@ -25,17 +26,18 @@ public class PriceDTO {
     public PriceDTO() {
     }
 
-    public PriceDTO(Price p, ExposureLevel exLvl) {
+    public PriceDTO(Price p) {
         this.id = p.getId();
         this.price = p.getPrice();
         this.start_date = p.getStart_date();
         this.end_date = p.getEnd_date();
+        this.type = p.getType();
     }
     /* END - constructors */
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -62,7 +64,7 @@ public class PriceDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -83,7 +85,7 @@ public class PriceDTO {
     }
 
     public void setLocal_product(Local_Product lp, ExposureLevel exLvl) {
-
+        this.local_product = Local_Product.buildDto(lp, exLvl);
     }
     /* END - setter */
 }

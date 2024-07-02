@@ -12,23 +12,21 @@ import com.knausrr.Knausrr.entities.dtos.StoreDTO;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
+@NamedNativeQueries({
 
+})
 public class Address {
     /* START - members */
     @Id
-    @SequenceGenerator(
-            name = "seq_Address",
-            sequenceName = "seq_Address",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_Address"
+            strategy = GenerationType.UUID
     )
     @Column(name = "address_id")
-    private Long id;
+    private UUID id;
+    @Column(nullable = false)
     private String country;
     private String district;
     @Column(nullable = false)
@@ -37,7 +35,9 @@ public class Address {
     private String city;
     @Column(nullable = false)
     private String street;
+    @Column(nullable = false)
     private String details;
+    //add unique key for country-city-street-details (special treatment for details)
     /* END - members */
 
     /* START - references */
@@ -46,10 +46,16 @@ public class Address {
     /* END - references */
 
     /* START - constructors */
-    public Address(String zipcode, String city, String street) {
-        this.zipcode = zipcode;
-        this.city = city;
-        this.street = street;
+    public Address(AddressDTO address) {
+        this.id = address.getId();
+        this.country = address.getCountry();
+        this.district = address.getDistrict();
+        this.zipcode = address.getZipcode();
+        this.city = address.getCity();
+        this.street = address.getStreet();
+        this.details = address.getDetails();
+
+        this.store = new Store(address.getStore());
     }
 
     public Address() {
@@ -74,7 +80,7 @@ public class Address {
     }
 
     /* START - getter */
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -109,7 +115,7 @@ public class Address {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

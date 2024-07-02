@@ -16,7 +16,7 @@ public class StoreService {
     @Autowired
     private StoreRepo storeRepo;
 
-    public StoreDTO findStoreById(Long id, ExposureLevel exLvl){
+    public StoreDTO findStoreById(UUID id, ExposureLevel exLvl){
         //return Optional.of(storeRepo.findById(id).get()).orElse(new Store());
         Store reqStore = storeRepo.findById(id).get();
         //return DTOBuilder.of(StoreDTO::new).with(StoreDTO::setName, "new Store").build();

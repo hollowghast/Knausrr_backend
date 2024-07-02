@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface BaseProductRepo extends JpaRepository<Base_Product, Long> {
-    Base_Product findBaseProductById(@Param("id") UUID id);
+public interface BaseProductRepo extends JpaRepository<Base_Product, UUID> {
+
 }

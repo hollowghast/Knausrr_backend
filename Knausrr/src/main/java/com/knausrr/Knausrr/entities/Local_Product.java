@@ -21,23 +21,20 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
+@NamedNativeQueries({
 
+})
 public class Local_Product{
     /* START - members */
     @Id
-    @SequenceGenerator(
-            name = "seq_Local_Product",
-            sequenceName = "seq_Local_Product",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_Local_Product"
+            strategy = GenerationType.UUID
     )
     @Column(name = "local_product_id")
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @CreationTimestamp
@@ -70,9 +67,20 @@ public class Local_Product{
     /* END - references */
 
     /* START - constructors */
-    public Local_Product(Base_Product base_product, Store store) {
-        this.base_product = base_product;
-        this.store = store;
+    public Local_Product(LocalProductDTO lp) {
+        this.id = lp.getId();
+        this._created = lp.get_created();
+        this._last_change = lp.get_last_change();
+        this.price = lp.getPrice();
+        this.pricePerUnit = lp.getPricePerUnit();
+        this.unitSize = lp.getUnitSize();
+        this.unit = lp.getUnit();
+        this.unitCount = lp.getUnitCount();
+        this.image = lp.getImage();
+
+        this.base_product = new Base_Product(lp.getBase_product());
+        this.store = new Store(lp.getStore());
+        this.prices = lp.getPrices().stream().map(p -> new Price(p)).toList();
     }
 
     public Local_Product() {
@@ -89,7 +97,7 @@ public class Local_Product{
             case MINIMAL:
             case STANDARD :
             default: {
-                lpDtoBuilder = DTOBuilder.of(() -> new LocalProductDTO(lp, exLvl));
+                lpDtoBuilder = DTOBuilder.of(() -> new LocalProductDTO(lp));
             }
         }
 
@@ -100,7 +108,7 @@ public class Local_Product{
     public Store getStore() {
         return store;
     }
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
     public List<Price> getPrices(LocalDate from, LocalDate until) {
@@ -163,6 +171,11 @@ public class Local_Product{
     public void setImage(Blob image) {
         this.image = image;
     }
+
+    public void setBase_product(Base_Product base_product) {
+        this.base_product = base_product;
+    }
+
     /* END - SETTER */
 
 

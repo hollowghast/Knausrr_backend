@@ -4,35 +4,34 @@ package com.knausrr.Knausrr.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.knausrr.Knausrr.entities.dtos.DTOBuilder;
-import com.knausrr.Knausrr.entities.dtos.ExposureLevel;
-import com.knausrr.Knausrr.entities.dtos.LocalProductDTO;
-import com.knausrr.Knausrr.entities.dtos.StoreDTO;
+import com.knausrr.Knausrr.entities.dtos.*;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.PersistenceCreator;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
+@NamedNativeQueries(
+    {
+        @NamedNativeQuery(name = "findByCompanyName",
+                query = "select s.* from store s inner join company c on c.id = s.company where c.name = ?1"
+        ),
+        @NamedNativeQuery(name = "findByName",
+                query = "select * from store where name = ?1",
+                resultClass = Store.class
+        )
+    }
+)
 public class Store {
     /* START - members */
     @Id
-    @SequenceGenerator(
-            name = "seq_Store",
-            sequenceName = "seq_Store",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_Store"
+            strategy = GenerationType.UUID
     )
     @Column(name = "store_id")
-    private Long id;
+    private UUID id;
 
-    @Column(name = "store_name", nullable = false)
+    @Column(name = "store_name", nullable = false, unique = true)
     private String name;
     /**
      * accepted currencies (CH -> CHF/EUR)
@@ -62,16 +61,15 @@ public class Store {
     /* END - references */
 
     /* START - constructors */
-    public Store(Company company, Address address) {
-        this.company = company;
-        this.address = address;
-        currencies = new ArrayList<Currency>();
-    }
-
-    public Store(String name, Company company, Address address) {
-        this.name = name;
-        this.company = company;
-        this.address = address;
+    public Store(StoreDTO s) {
+        this.id = s.getId();
+        this.name = s.getName();
+        this.currencies = s.getCurrencies();
+        this.manager = new Contact(s.getManager());
+        this.address = new Address(s.getAddress());
+        this.company = new Company(s.getCompany());
+        this.localProducts = s.getLocalProducts().stream().map(p -> new Local_Product(p)).toList();
+        this.openingHours = s.getOpeningHours().stream().map(o -> new OpeningHours(o)).toList();
     }
 
     public Store() {
@@ -85,7 +83,7 @@ public class Store {
         switch (exLvl){
             case EXTENDED: // for unidirectional references
             case COMPLETE:
-                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store, exLvl))
+                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store))
                     .with((storedto, empty) -> {
                         storedto.setAddress(store.getAddress(), exLvl);
                     }, null)
@@ -102,7 +100,7 @@ public class Store {
                         storedto.setOpeningHours(store.getOpeningHours(), exLvl);
                     }, null);
             case FAST:
-                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store, exLvl))
+                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store))
                     .with((storedto, empty) -> {
                         storedto.setAddress(store.getAddress(), exLvl);
                     }, null)
@@ -110,7 +108,7 @@ public class Store {
                         storedto.setCompany(store.getCompany(), exLvl);
                     }, null);
             case MINIMAL:
-                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store, exLvl))
+                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store))
                     .with((storedto, empty) -> {
                         storedto.setAddress(store.getAddress(), exLvl);
                     }, null)
@@ -128,7 +126,7 @@ public class Store {
                     }, null);
             case STANDARD :
             default: {
-                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store, exLvl))
+                storeDtoBuilder = DTOBuilder.of(() -> new StoreDTO(store))
                         .with((storedto, empty) -> {
                             storedto.setAddress(store.getAddress(), exLvl);
                         }, null);
@@ -146,7 +144,7 @@ public class Store {
         return name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -177,7 +175,7 @@ public class Store {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

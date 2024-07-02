@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -20,8 +21,8 @@ public class ProductService {
     @Autowired
     private BaseProductRepo baseProductRepo;
 
-    public Local_Product getLocalProductById(Long id) {
-        return localProductRepo.findLocalProductById(id);
+    public Local_Product getLocalProductById(UUID id) {
+        return localProductRepo.findById(id).get();
     }
 
     public Local_Product addLocalProduct(Local_Product product) {

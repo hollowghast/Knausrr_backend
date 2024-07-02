@@ -11,31 +11,38 @@ import com.knausrr.Knausrr.entities.dtos.ExposureLevel;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
+@NamedNativeQueries({
 
+})
 public class Company {
-    @SequenceGenerator(name="seq_Company",
-            sequenceName = "seq_Company")
+    /* START - members */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-    generator = "seq_Company")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "company_id")
-    private Long id;
+    private UUID id;
+    @Column(name = "company_name", nullable = false)
+    private String name;
+    @Lob
+    private byte [] logo;
+    /* END - members */
 
+    /* START - references */
     @OneToMany(mappedBy = "company",
     cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Store> stores;
-
-    @Column(name = "company_name", nullable = false)
-    private String name;
-
-    @Lob
-    private byte [] logo;
+    /* END - references */
 
     /* START - constructors */
-    public Company(String name) {
-        this.name = name;
+    public Company(CompanyDTO comp)
+    {
+        this.id = comp.getId();
+        this.name = comp.getName();
+        this.logo = comp.getLogo();
+
+        this.stores = comp.getStores().stream().map(s -> new Store(s)).toList();
     }
 
     public Company() {
@@ -52,7 +59,7 @@ public class Company {
             case MINIMAL:
             case STANDARD :
             default: {
-                companyDtoBuilder = DTOBuilder.of(() -> new CompanyDTO(company, exLvl));
+                companyDtoBuilder = DTOBuilder.of(() -> new CompanyDTO(company));
             }
         }
 
@@ -61,7 +68,7 @@ public class Company {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -80,7 +87,7 @@ public class Company {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

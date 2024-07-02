@@ -3,9 +3,11 @@ package com.knausrr.Knausrr.entities.dtos;
 import com.knausrr.Knausrr.entities.Contact;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 public class ContactDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private String firstname;
     private String lastname;
     private String email;
@@ -17,7 +19,7 @@ public class ContactDTO {
 
     /* START - constructors */
 
-    public ContactDTO(Contact c, ExposureLevel exLvl) {
+    public ContactDTO(Contact c) {
         this.id = c.getId();
         this.firstname = c.getFirstname();
         this.lastname = c.getLastname();
@@ -31,7 +33,7 @@ public class ContactDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -54,7 +56,7 @@ public class ContactDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

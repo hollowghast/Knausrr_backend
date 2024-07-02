@@ -6,10 +6,12 @@ import com.knausrr.Knausrr.entities.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
 
+import java.util.UUID;
+
 public class AddressDTO {
 
     /* START - members */
-    private Long id;
+    private UUID id;
     private String country;
     private String district;
     private String zipcode;
@@ -40,7 +42,7 @@ public class AddressDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -75,7 +77,7 @@ public class AddressDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

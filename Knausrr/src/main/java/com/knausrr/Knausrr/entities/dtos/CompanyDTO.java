@@ -5,10 +5,11 @@ import com.knausrr.Knausrr.entities.Store;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CompanyDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private String name;
     private byte [] logo;
     /* END - members */
@@ -22,7 +23,7 @@ public class CompanyDTO {
     public CompanyDTO() {
     }
 
-    public CompanyDTO(Company company, ExposureLevel exLvl) {
+    public CompanyDTO(Company company) {
         this.id = company.getId();
         this.name = company.getName();
         this.logo = company.getLogo();
@@ -31,7 +32,7 @@ public class CompanyDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -50,7 +51,7 @@ public class CompanyDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

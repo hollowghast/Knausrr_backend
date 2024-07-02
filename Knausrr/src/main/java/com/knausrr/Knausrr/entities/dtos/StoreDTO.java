@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.knausrr.Knausrr.entities.*;
 import org.springframework.cglib.core.Local;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.UUID;
 
 public class StoreDTO {
     /* START - members */
-    private  Long id;
+    private  UUID id;
     private  String name;
+    private List<Currency> currencies;
     /* END - members */
 
     /* START - references */
@@ -25,15 +28,16 @@ public class StoreDTO {
     public StoreDTO() {
     }
 
-    public StoreDTO(Store st, ExposureLevel exLvl){
+    public StoreDTO(Store st){
         this.id = st.getId();
         this.name = st.getName();
+        this.currencies = st.getCurrencies();
     }
     /* END - constructor */
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -60,11 +64,15 @@ public class StoreDTO {
     public List<OpeningHoursDTO> getOpeningHours() {
         return openingHours;
     }
+
+    public List<Currency> getCurrencies() {
+        return currencies;
+    }
     /* END - getter */
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

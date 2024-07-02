@@ -14,23 +14,20 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
+@NamedNativeQueries({
 
+})
 public class OpeningHours {
     /* START - members */
     @Id
-    @SequenceGenerator(
-            name = "seq_Opening_Hours",
-            sequenceName = "seq_Opening_Hours",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_Opening_Hours"
+            strategy = GenerationType.UUID
     )
     @Column(name = "opening_hours_id")
-    private Long id;
+    private UUID id;
 
     /**
      * Format 0800 - 1200
@@ -51,32 +48,13 @@ public class OpeningHours {
     /* END - references */
 
     /* START - constructors */
-    /**
-     * Sets general opening hours which are valid for EVERY day
-     * @param store
-     * @param start_time
-     * @param end_time
-     */
-    public OpeningHours(Long id, Store store, Integer start_time, Integer end_time) {
-        this.id=id;
-        this.store = store;
-        this.startTime = start_time;
-        this.endTime = end_time;
-    }
+    public OpeningHours(OpeningHoursDTO oh) {
+        this.id = oh.getId();
+        this.startTime = oh.getStartTime();
+        this.endTime = oh.getEndTime();
+        this.specialOpeningHours = oh.getSpecialOpeningHours();
 
-    /**
-     * Sets opening hours on this specific date
-     * @param store
-     * @param start_time
-     * @param end_time
-     * @param date
-     */
-    public OpeningHours(Long id, Store store, Integer start_time, Integer end_time, Date date) {
-        this.id=id;
-        this.store = store;
-        this.startTime = start_time;
-        this.endTime = end_time;
-        this.specialOpeningHours = date;
+        this.store = new Store(oh.getStore());
     }
 
     public OpeningHours() {
@@ -93,7 +71,7 @@ public class OpeningHours {
             case MINIMAL:
             case STANDARD :
             default: {
-                ohDtoBuilder = DTOBuilder.of(() -> new OpeningHoursDTO(oh, exLvl));
+                ohDtoBuilder = DTOBuilder.of(() -> new OpeningHoursDTO(oh));
             }
         }
 
@@ -102,7 +80,7 @@ public class OpeningHours {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -125,7 +103,7 @@ public class OpeningHours {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

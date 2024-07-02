@@ -8,10 +8,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class OpeningHoursDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private Integer startTime;
     private Integer endTime;
     private Date specialOpeningHours;
@@ -26,7 +27,7 @@ public class OpeningHoursDTO {
     public OpeningHoursDTO() {
     }
 
-    public OpeningHoursDTO(OpeningHours oh, ExposureLevel exLvl) {
+    public OpeningHoursDTO(OpeningHours oh) {
         this.id = oh.getId();
         this.startTime = oh.getStartTime();
         this.endTime = oh.getEndTime();
@@ -36,7 +37,7 @@ public class OpeningHoursDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -59,7 +60,7 @@ public class OpeningHoursDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -76,7 +77,7 @@ public class OpeningHoursDTO {
     }
 
     public void setStore(Store store, ExposureLevel exLvl) {
-
+        this.store = Store.buildDto(store, exLvl);
     }
     /* END - setter */
 }

@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface LocalProductRepo extends JpaRepository<Local_Product, Long> {
-    Local_Product findLocalProductById(Long id);
+public interface LocalProductRepo extends JpaRepository<Local_Product, UUID> {
     @Query("SELECT p FROM Local_Product p WHERE p.id IN :ids")
-    List<Local_Product> findLocalProductsByIds(@Param("ids") Long [] ids);
+    List<Local_Product> findLocalProductsByIds(@Param("ids") UUID[] ids);
 
 }

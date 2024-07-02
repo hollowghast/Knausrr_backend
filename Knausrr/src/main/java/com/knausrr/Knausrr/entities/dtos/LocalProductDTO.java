@@ -8,10 +8,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 public class LocalProductDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private Timestamp _created;
     private Timestamp _last_change;
     private Double price;
@@ -33,7 +34,7 @@ public class LocalProductDTO {
     public LocalProductDTO() {
     }
 
-    public LocalProductDTO(Local_Product lp, ExposureLevel exLvl) {
+    public LocalProductDTO(Local_Product lp) {
         this.id=lp.getId();
         this._created = lp.get_created();
         this._last_change = lp.get_last_change();
@@ -47,7 +48,7 @@ public class LocalProductDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -98,7 +99,7 @@ public class LocalProductDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -135,15 +136,15 @@ public class LocalProductDTO {
     }
 
     public void setBase_product(Base_Product bp, ExposureLevel exLvl) {
-
+        this.base_product = Base_Product.buildDto(bp, exLvl);
     }
 
     public void setStore(Store store, ExposureLevel exLvl) {
-
+        this.store = Store.buildDto(store, exLvl);
     }
 
     public void setPrices(List<Price> prices, ExposureLevel exLvl) {
-
+        this.prices = prices.stream().map(p -> Price.buildDto(p, exLvl)).toList();
     }
     /* END - setter */
 }

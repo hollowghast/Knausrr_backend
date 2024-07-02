@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/store", produces = "application/json")
@@ -17,7 +18,7 @@ public class StoreController {
     private StoreService storeService;
 
     @GetMapping(params = "id")
-    public StoreDTO findStoreById(@RequestParam("id") Long id){
+    public StoreDTO findStoreById(@RequestParam("id") UUID id){
         return storeService.findStoreById(id, ExposureLevel.STANDARD);
     }
     @GetMapping(params = "name")

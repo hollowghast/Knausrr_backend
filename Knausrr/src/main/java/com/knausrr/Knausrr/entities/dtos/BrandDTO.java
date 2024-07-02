@@ -6,10 +6,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.UUID;
 
 public class BrandDTO {
     /* START - members */
-    private Long id;
+    private UUID id;
     private String name;
     /* END - members */
 
@@ -22,7 +23,7 @@ public class BrandDTO {
     public BrandDTO() {
     }
 
-    public BrandDTO(Brand b, ExposureLevel exLvl) {
+    public BrandDTO(Brand b) {
         this.id = b.getId();
         this.name = b.getName();
     }
@@ -30,7 +31,7 @@ public class BrandDTO {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -45,7 +46,7 @@ public class BrandDTO {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -53,8 +54,8 @@ public class BrandDTO {
         this.name = name;
     }
 
-    public void setBase_products(List<Base_Product> base_products) {
-
+    public void setBase_products(List<Base_Product> base_products, ExposureLevel exLvl) {
+        this.base_products = base_products.stream().map(bp -> Base_Product.buildDto(bp, exLvl)).toList();
     }
     /* END - setter */
 }

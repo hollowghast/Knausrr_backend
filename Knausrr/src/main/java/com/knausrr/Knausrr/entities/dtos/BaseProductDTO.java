@@ -98,7 +98,7 @@ public class BaseProductDTO {
     }
 
     public void setBrand(Brand brand, ExposureLevel exLvl) {
-
+        this.brand = Brand.buildDto(brand, exLvl);
     }
     /* END - setter */
 }

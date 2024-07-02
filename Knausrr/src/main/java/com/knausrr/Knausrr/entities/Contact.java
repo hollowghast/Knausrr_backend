@@ -9,15 +9,18 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ValueGenerationType;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
+@NamedNativeQueries({
+
+})
 public class Contact {
     /* START - members */
     @Id
-    @SequenceGenerator(name = "seq_Contact", allocationSize = 1, sequenceName = "seq_Contact")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_Contact")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "contact_id")
-    private Long id;
+    private UUID id;
 
     private String firstname;
 
@@ -33,6 +36,14 @@ public class Contact {
 
     /* START - constructors */
 
+    public Contact(ContactDTO c) {
+        this.id = c.getId();
+        this.firstname = c.getFirstname();
+        this.lastname = c.getLastname();
+        this.email = c.getEmail();
+        this.phoneNumber = c.getPhoneNumber();
+    }
+
     public Contact() {
     }
     /* END - constructors */
@@ -47,7 +58,7 @@ public class Contact {
             case MINIMAL:
             case STANDARD :
             default: {
-                cDtoBuilder = DTOBuilder.of(() -> new ContactDTO(c, exLvl));
+                cDtoBuilder = DTOBuilder.of(() -> new ContactDTO(c));
             }
         }
 
@@ -57,7 +68,7 @@ public class Contact {
 
     /* START - getter */
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -80,7 +91,7 @@ public class Contact {
 
     /* START - setter */
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

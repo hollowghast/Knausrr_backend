@@ -4,6 +4,10 @@ package com.knausrr.Knausrr.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.knausrr.Knausrr.entities.dtos.BaseProductDTO;
+import com.knausrr.Knausrr.entities.dtos.BrandDTO;
+import com.knausrr.Knausrr.entities.dtos.DTOBuilder;
+import com.knausrr.Knausrr.entities.dtos.ExposureLevel;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.repository.Query;
@@ -11,16 +15,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.Currency;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-/*
-@NamedQueries(
-        @NamedQuery(name = "Base_Product.findBaseProductsById",
-                query="SELECT b.* FROM Base_Product b WHERE b.id=?1"
-        )
-)
-*/
 @NamedNativeQueries(
         @NamedNativeQuery(name = "Base_Product.findBaseProductsById",
             query = "SELECT b.* FROM Base_Product b WHERE b.id = ?", resultClass = Base_Product.class)
@@ -60,16 +58,37 @@ public class Base_Product {
     /* END - references */
 
     /* START - constructors */
-    public Base_Product(String barcode, String name, String description, Brand brand) {
-        this.barcode = barcode;
-        this.name = name;
-        this.description = description;
-        this.brand = brand;
+    public Base_Product(BaseProductDTO bp) {
+        this.id = bp.getId();
+        this.barcode = bp.getBarcode();
+        this.name = bp.getName();
+        this.description = bp.getDescription();
+        this._creation = bp.get_creation();
+        this._last_update = bp.get_last_update();
+
+        this.brand = new Brand(bp.getBrand());
     }
 
     public Base_Product() {
     }
     /* END - constructors */
+
+    public final static BaseProductDTO buildDto(Base_Product bp, ExposureLevel exLvl){
+        DTOBuilder<BaseProductDTO> bpDtoBuilder = null;
+
+        switch (exLvl){
+            case EXTENDED:
+            case COMPLETE:
+            case FAST:
+            case MINIMAL:
+            case STANDARD :
+            default: {
+                bpDtoBuilder = DTOBuilder.of(() -> new BaseProductDTO(bp, exLvl));
+            }
+        }
+
+        return Objects.isNull(bpDtoBuilder) ? null : bpDtoBuilder.build();
+    }
 
     /* START - getter */
     public UUID getId() {
