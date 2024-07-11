@@ -1,10 +1,14 @@
 package com.knausrr.Knausrr.admin;
 
 import com.knausrr.Knausrr.entities.*;
+import com.knausrr.Knausrr.solr.service.SolrService;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.*;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -13,6 +17,9 @@ import java.time.OffsetDateTime;
 public class AdminService {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+
+    @Autowired
+    private SolrService solrService;
 
 
     /**
@@ -45,5 +52,9 @@ public class AdminService {
 
         entityManager.close();
 
+    }
+
+    public void indexProductForCode(Long id) throws SolrServerException, IOException {
+        solrService.indexBaseProduct(entityManagerFactory.createEntityManager().find(Base_Product.class, id));
     }
 }
